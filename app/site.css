@@ -14,3 +14,13 @@ a{
 	color: #004d99;
 }
 
+/**********************************/
+.home .crow{
+	float: none;
+	margin: auto;
+	padding-bottom: 1em;
+}
+
+.home h1{
+	padding-top: 1.5em;
+}
