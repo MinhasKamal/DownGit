@@ -1,0 +1,16 @@
+body{
+	font-family: sans-serif, arial;
+    color: #4A4F64;
+}
+
+h1, h2, h3, h4, h5, h6, p{
+	margin: 0;
+}
+
+a{
+	color: #004d99;
+}a:hover{
+	text-decoration: underline;
+	color: #004d99;
+}
+
