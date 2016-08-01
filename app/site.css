@@ -24,3 +24,12 @@ a{
 .home h1{
 	padding-top: 1.5em;
 }
+
+/**********************************/
+.toast-down{
+	background-image: url("../res/images/warning.png") !important;
+	background-color: #8c8c8c;
+}
+
+
+

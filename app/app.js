@@ -5,6 +5,7 @@ var siteHeaderText={};
 var downGit = angular.module('downGit', [
 	'ngRoute',
 	'homeModule',
+	'toastr',
 ]);
 
 downGit.config([
@@ -19,4 +20,15 @@ downGit.config([
                 redirectTo: '/home',
             });
     }
+]);
+
+downGit.config([
+    'toastrConfig',
+	
+	function(toastrConfig) {
+		angular.extend(toastrConfig, {
+			positionClass: 'toast-bottom-right',
+			maxOpened: 3,
+		});
+	}
 ]);
