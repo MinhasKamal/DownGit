@@ -1,3 +1,9 @@
+/***********************************************************
+* Developer: Minhas Kamal (minhaskamal024@gmail.com)       *
+* Website: https://github.com/MinhasKamal/DownGit          *
+* License: GNU General Public License version-3            *
+***********************************************************/
+
 'use strict';
 
 var siteHeaderText={};
@@ -5,6 +11,7 @@ var siteHeaderText={};
 var downGit = angular.module('downGit', [
 	'ngRoute',
 	'homeModule',
+	'toastr',
 ]);
 
 downGit.config([
@@ -19,4 +26,15 @@ downGit.config([
                 redirectTo: '/home',
             });
     }
+]);
+
+downGit.config([
+    'toastrConfig',
+	
+	function(toastrConfig) {
+		angular.extend(toastrConfig, {
+			positionClass: 'toast-bottom-right',
+			maxOpened: 3,
+		});
+	}
 ]);

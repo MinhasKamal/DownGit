@@ -1,4 +1,23 @@
 ﻿<div class="home">
-	<div class="content-section">{{url}}</div>
-	<a href="#home?url=/github.com/minhaskamal">download</a>
+
+<div class="text-center">
+	<h1 class="crow">DownGit</h1>
+	
+	<div class="col-md-6 crow">
+		<input name="url" type="url" placeholder="GitHub Directory Link" class="form-control" ng-model="url" ></input>
+	</div>
+	
+	<div class="btn-group crow">
+		<button type="button" class="btn btn-default" ng-click="createDownLink()">Create Download Link</button>
+		<a type="button" class="btn btn-default" ng-href="#home?url={{url}}">Download</a>
+	</div>
+	
+	<div class="crow"></div>
+	<div class="crow"></div>
+	<div class="crow"></div>
+	
+	<div class="col-md-6 crow" ng-show="downUrl">
+		<input name="url" type="url" placeholder="GitHub Directory Download Link" class="form-control" ng-model="downUrl" ></input>
+	</div>
+</div>
 </div>
