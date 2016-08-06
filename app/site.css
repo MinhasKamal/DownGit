@@ -25,6 +25,12 @@ a{
 	padding-top: 1.5em;
 }
 
+.home h1 a{
+	color: #4A4F64;
+}.home h1  a:hover{
+	text-decoration: none;
+}
+
 /**********************************/
 .toast-down{
 	background-image: url("../res/images/warning.png") !important;
