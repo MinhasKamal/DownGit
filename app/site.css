@@ -21,14 +21,22 @@ a{
 	padding-bottom: 1em;
 }
 
-.home h1{
-	padding-top: 1.5em;
+.home .space{
+	float: none;
+	margin: auto;
+	padding-bottom: 3em;
 }
 
 .home h1 a{
 	color: #4A4F64;
 }.home h1  a:hover{
 	text-decoration: none;
+}
+
+.home .footer{
+	position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
 /**********************************/
