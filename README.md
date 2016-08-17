@@ -1,4 +1,4 @@
-# DownGit
+<h1> <img src="https://github.com/MinhasKamal/DownGit/raw/master/res/images/DownGit.png" width="20" height=auto /> DownGit </h1>
 #### Create GitHub Directory Download Link
 
 With [this tool](https://minhaskamal.github.io/DownGit) you can directly download or create download link to any GitHub public directory.
