@@ -17,17 +17,17 @@
 		<a type="button" class="btn btn-default" ng-href="#home?url={{url}}">Download</a>
 	</div>
 	
-	<div class="vertical-space"></div>
 	
-	<div ng-show="processing.val">
-		<img src="res/images/processing.gif" style="width:4em;height:auto;" />
-		<p>Downloading...</p>
+	<div ng-show="isProcessing.val">
+		<div class="vertical-space"></div>
+		<img class="processing-img" src="res/images/processing.gif" />
+		<p>Downloaded {{downloadedFiles.val}} of {{totalFiles.val}} files</p>
 	</div>
 	
-	<div class="vertical-space"></div>
 	
 	<div class="col-md-6 center-row" ng-show="downUrl">
-		<input name="url" type="url" placeholder="GitHub Directory Download Link" class="form-control" ng-model="downUrl" ></input>
+		<div class="vertical-space"></div>
+		<textarea class="form-control download-link-box" ng-model="downUrl" ></textarea>
 	</div>
 	
 	<div class="footer"><a target="_blank" href="https://github.com/MinhasKamal/DownGit">DownGit</a> by 

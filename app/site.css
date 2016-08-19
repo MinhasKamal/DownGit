@@ -33,6 +33,15 @@ a{
 	text-decoration: none;
 }
 
+.home .processing-img{
+	width: 4em;
+	height: auto;
+}
+
+.home .download-link-box{
+	resize: vertical;
+}
+
 .home .footer{
 	position: fixed;
     bottom: 0;
