@@ -1,28 +1,32 @@
 ﻿<div class="home">
 
 <div class="text-center">
-	<div class="space"></div>
+	<div class="vertical-space"></div>
 	
 	<h1><a href="https://minhaskamal.github.io/DownGit">DownGit</a></h1>
-	<div class="crow"></div>
-	<h4 class="crow">Create GitHub Directory Download Link</h4>
+	<div class="center-row"></div>
+	<h4>Create GitHub Directory Download Link</h4>
 	
-	<div class="space"></div>
+	<div class="vertical-space"></div>
 	
-	<div class="col-md-6 crow">
+	<div class="col-md-6 center-row">
 		<input name="url" type="url" placeholder="GitHub Directory Link" class="form-control" ng-model="url" ></input>
 	</div>
-	<div class="btn-group crow">
+	<div class="btn-group center-row">
 		<button type="button" class="btn btn-default" ng-click="createDownLink()">Create Download Link</button>
 		<a type="button" class="btn btn-default" ng-href="#home?url={{url}}">Download</a>
 	</div>
 	
-	<div class="crow"></div>
-	<img ng-show="processing.val" src="res/images/processing.gif" alt="processing..." style="width:4em;height:auto;" />
+	<div class="vertical-space"></div>
 	
-	<div class="space"></div>
+	<div ng-show="processing.val">
+		<img src="res/images/processing.gif" style="width:4em;height:auto;" />
+		<p>Downloading...</p>
+	</div>
 	
-	<div class="col-md-6 crow" ng-show="downUrl">
+	<div class="vertical-space"></div>
+	
+	<div class="col-md-6 center-row" ng-show="downUrl">
 		<input name="url" type="url" placeholder="GitHub Directory Download Link" class="form-control" ng-model="downUrl" ></input>
 	</div>
 	
