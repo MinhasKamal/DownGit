@@ -15,13 +15,13 @@ a{
 }
 
 /**********************************/
-.home .crow{
+.home .center-row{
 	float: none;
 	margin: auto;
 	padding-bottom: 1em;
 }
 
-.home .space{
+.home .vertical-space{
 	float: none;
 	margin: auto;
 	padding-bottom: 3em;
@@ -31,6 +31,15 @@ a{
 	color: #4A4F64;
 }.home h1  a:hover{
 	text-decoration: none;
+}
+
+.home .processing-img{
+	width: 4em;
+	height: auto;
+}
+
+.home .download-link-box{
+	resize: vertical;
 }
 
 .home .footer{
