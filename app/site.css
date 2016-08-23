@@ -10,11 +10,12 @@ h1, h2, h3, h4, h5, h6, p{
 a{
 	color: #004d99;
 }a:hover{
-	text-decoration: underline;
+	text-decoration: none;
 	color: #004d99;
 }
 
 /**********************************/
+
 .home .center-row{
 	float: none;
 	margin: auto;
@@ -49,6 +50,7 @@ a{
 }
 
 /**********************************/
+
 .toast-down{
 	background-image: url("../res/images/warning.png") !important;
 	background-color: #8c8c8c;
