@@ -4,6 +4,8 @@
 
 #### Create GitHub Directory Download Link
 
+[![Join the chat at https://gitter.im/MinhasKamal/DownGit](https://badges.gitter.im/MinhasKamal/DownGit.svg)](https://gitter.im/MinhasKamal/DownGit?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 With this tool you can directly download or create download link to any GitHub public directory.
 
 ### Website
