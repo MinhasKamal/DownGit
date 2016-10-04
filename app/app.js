@@ -1,7 +1,7 @@
 /***********************************************************
 * Developer: Minhas Kamal (minhaskamal024@gmail.com)       *
 * Website: https://github.com/MinhasKamal/DownGit          *
-* License: GNU General Public License version-3            *
+* License: MIT License                                     *
 ***********************************************************/
 
 'use strict';
