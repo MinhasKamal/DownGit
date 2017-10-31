@@ -127,7 +127,7 @@ homeModule.factory('homeService', [
 			var zip = new JSZip();
 			$q.all(requestedPromises).then(function(data) {
 				for(var i=files.length-1; i>=0; i--){
-					zip.file(downloadFileName+files[i].path.substring(downloadFileName.length),
+					zip.file(files[i].path.substring(files[i].path.indexOf(downloadFileName)),
 						files[i].data);
 				}
 
