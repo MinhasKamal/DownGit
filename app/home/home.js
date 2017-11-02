@@ -40,14 +40,14 @@ homeModule.config([
 
 					if($scope.url.match(templateUrl)){
 						var parameter = {url: $routeParams.url,
-										fileName: $routeParams.fileName,
-										rootDirectory: $routeParams.rootDirectory};
+								fileName: $routeParams.fileName,
+								rootDirectory: $routeParams.rootDirectory};
 						var progress = {isProcessing: $scope.isProcessing,
-										downloadedFiles: $scope.downloadedFiles,
-										totalFiles: $scope.totalFiles};
+								downloadedFiles: $scope.downloadedFiles,
+								totalFiles: $scope.totalFiles};
 						homeService.downloadZippedFiles(parameter, progress);
 					}else if($scope.url!=""){
-						toastr.warning("Invalid URL",{iconClass: 'toast-down'});
+						toastr.warning("Invalid URL", {iconClass: 'toast-down'});
 					}
 
 					$scope.createDownLink = function(){
@@ -60,7 +60,7 @@ homeModule.config([
 						if($scope.url.match(templateUrl)){
 							$scope.downUrl = downloadUrlPrefix + $scope.url;
 						}else if($scope.url!=""){
-							toastr.warning("Invalid URL",{iconClass: 'toast-down'});
+							toastr.warning("Invalid URL", {iconClass: 'toast-down'});
 						}
 					};
 
@@ -86,7 +86,7 @@ homeModule.factory('homeService', [
 			resolvedUrl.author = splitPath[1];
 			resolvedUrl.repository = splitPath[2];
 			resolvedUrl.branch = splitPath[4];
-			resolvedUrl.rootFolderName = splitPath[splitPath.length-1];
+			resolvedUrl.rootName = splitPath[splitPath.length-1];
 			resolvedUrl.directoryPath = repoPath.substring(repoPath.indexOf(splitPath[4])+splitPath[4].length+1);
 			resolvedUrl.urlPrefix = "https://api.github.com/repos/"+resolvedUrl.author+
 					"/"+resolvedUrl.repository+"/contents/";
@@ -103,12 +103,12 @@ homeModule.factory('homeService', [
 			var requestedPromises = [];
 			
 			if(!downloadFileName || downloadFileName==""){
-				downloadFileName = repoInfo.rootFolderName;
+				downloadFileName = repoInfo.rootName;
 			}
 			if(rootDirectoryName=="false"){
 				rootDirectoryName = "";
 			}else if(!rootDirectoryName || rootDirectoryName=="" || rootDirectoryName=="true"){
-				rootDirectoryName = repoInfo.rootFolderName+"/";
+				rootDirectoryName = repoInfo.rootName+"/";
 			}else{
 				rootDirectoryName = rootDirectoryName+"/";
 			}
@@ -162,23 +162,38 @@ homeModule.factory('homeService', [
 			progress.totalFiles.val = requestedPromises.length;
 		}
 
+		var downloadFile = function (url) {
+			var zip = new JSZip();
+			$http.get(url, {responseType: "arraybuffer"}).then(function (file){
+				zip.file(repoInfo.rootName, file.data);
+				zip.generateAsync({type:"blob"}).then(function(content){
+					saveAs(content, repoInfo.rootName+".zip");
+				});
+			}, function(error){
+				console.log(error);
+			});
+		}
+
 		return {
 			downloadZippedFiles: function(parameter, progress){
-				var resolvedUrl = resolveUrl(parameter.url);
+				repoInfo = resolveUrl(parameter.url);
+				downloadFileName = parameter.fileName;
+				rootDirectoryName = parameter.rootDirectory;
 
-				if(!resolvedUrl.directoryPath || resolvedUrl.directoryPath==""){
-					if(!resolvedUrl.branch || resolvedUrl.branch==""){
-						resolvedUrl.branch="master";
+				if(!repoInfo.directoryPath || repoInfo.directoryPath==""){
+					if(!repoInfo.branch || repoInfo.branch==""){
+						repoInfo.branch="master";
 					}
 
-					var downloadUrl = "https://github.com/"+resolvedUrl.author+"/"+
-						resolvedUrl.repository+"/archive/"+resolvedUrl.branch+".zip";
+					var downloadUrl = "https://github.com/"+repoInfo.author+"/"+
+						repoInfo.repository+"/archive/"+repoInfo.branch+".zip";
 					
 					window.location = downloadUrl;
+				}else if(repoInfo.rootName.indexOf(".") >= 0){
+					var downloadUrl = "https://raw.githubusercontent.com/"+repoInfo.author+"/"+
+						repoInfo.repository+"/"+repoInfo.branch+"/"+repoInfo.directoryPath;
+					downloadFile(downloadUrl);
 				}else {
-					downloadFileName = parameter.fileName;
-					rootDirectoryName = parameter.rootDirectory;
-					repoInfo = resolvedUrl;
 					downloadDir(progress);
 				}
 			},
