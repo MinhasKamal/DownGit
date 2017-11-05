@@ -87,8 +87,11 @@ homeModule.factory('homeService', [
 			resolvedUrl.repository = splitPath[2];
 			resolvedUrl.branch = splitPath[4];
 			resolvedUrl.rootName = splitPath[splitPath.length-1];
-			resolvedUrl.directoryPath = repoPath.substring(repoPath.indexOf(splitPath[4])+splitPath[4].length+1);
-			resolvedUrl.urlPrefix = "https://api.github.com/repos/"+resolvedUrl.author+
+			if(!!splitPath[4]){
+				resolvedUrl.directoryPath = repoPath.substring(
+					repoPath.indexOf(splitPath[4])+splitPath[4].length+1);
+			}
+            resolvedUrl.urlPrefix = "https://api.github.com/repos/"+resolvedUrl.author+
 					"/"+resolvedUrl.repository+"/contents/";
 			resolvedUrl.urlPostfix = "?ref="+resolvedUrl.branch;
 
@@ -189,12 +192,16 @@ homeModule.factory('homeService', [
 						repoInfo.repository+"/archive/"+repoInfo.branch+".zip";
 					
 					window.location = downloadUrl;
-				}else if(repoInfo.rootName.indexOf(".") >= 0){
-					var downloadUrl = "https://raw.githubusercontent.com/"+repoInfo.author+"/"+
-						repoInfo.repository+"/"+repoInfo.branch+"/"+repoInfo.directoryPath;
-					downloadFile(downloadUrl);
-				}else {
-					downloadDir(progress);
+				}else{
+					$http.get(repoInfo.urlPrefix+repoInfo.directoryPath+repoInfo.urlPostfix).then(function (response){
+						if(response.data instanceof Array){
+							downloadDir(progress);
+						}else{
+							var downloadUrl = "https://raw.githubusercontent.com/"+repoInfo.author+"/"+
+								repoInfo.repository+"/"+repoInfo.branch+"/"+repoInfo.directoryPath;
+							downloadFile(downloadUrl);
+						}
+					});
 				}
 			},
 		};
