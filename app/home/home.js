@@ -45,10 +45,17 @@ homeModule.config([
 						var progress = {isProcessing: $scope.isProcessing,
 								downloadedFiles: $scope.downloadedFiles,
 								totalFiles: $scope.totalFiles};
-						homeService.downloadZippedFiles(parameter, progress);
+						homeService.downloadZippedFiles(parameter, progress, toastr);
 					}else if($scope.url!=""){
+						$scope.url = "";
 						toastr.warning("Invalid URL", {iconClass: 'toast-down'});
 					}
+
+					$scope.catchEnter = function(keyEvent){
+						if(keyEvent.which == 13){
+							$scope.download();
+						}
+					};
 
 					$scope.createDownLink = function(){
 						$scope.downUrl="";
@@ -64,6 +71,10 @@ homeModule.config([
 						}
 					};
 
+					$scope.download = function(){
+						window.location = "#home?url="+$scope.url;
+					};
+
 				}],
 			});
 	}
@@ -75,27 +86,41 @@ homeModule.factory('homeService', [
 	
 	function ($http, $q) {
 		var repoInfo = {};
-		var downloadFileName = "";
-		var rootDirectoryName = "";
 
-		var resolveUrl = function(url){
-			var repoPath = new URL(url).pathname;
+		var parseInfo = function(parameters){
+			var repoPath = new URL(parameters.url).pathname;
 			var splitPath = repoPath.split("/");
-
-			var resolvedUrl = {};
-			resolvedUrl.author = splitPath[1];
-			resolvedUrl.repository = splitPath[2];
-			resolvedUrl.branch = splitPath[4];
-			resolvedUrl.rootName = splitPath[splitPath.length-1];
+			var info = {};
+			
+			info.author = splitPath[1];
+			info.repository = splitPath[2];
+			info.branch = splitPath[4];
+			
+			info.rootName = splitPath[splitPath.length-1];
 			if(!!splitPath[4]){
-				resolvedUrl.directoryPath = repoPath.substring(
+				info.resPath = repoPath.substring(
 					repoPath.indexOf(splitPath[4])+splitPath[4].length+1);
 			}
-            resolvedUrl.urlPrefix = "https://api.github.com/repos/"+resolvedUrl.author+
-					"/"+resolvedUrl.repository+"/contents/";
-			resolvedUrl.urlPostfix = "?ref="+resolvedUrl.branch;
-
-			return resolvedUrl;
+			info.urlPrefix = "https://api.github.com/repos/"+info.author+
+					"/"+info.repository+"/contents/";
+			info.urlPostfix = "?ref="+info.branch;
+			
+			if(!parameters.fileName || parameters.fileName==""){
+				info.downloadFileName = info.rootName;
+			}else{
+				info.downloadFileName = parameters.fileName;
+			}
+			
+			if(parameters.rootDirectory=="false"){
+				info.rootDirectoryName = "";
+			}else if(!parameters.rootDirectory || parameters.rootDirectory=="" ||
+					parameters.rootDirectory=="true"){
+				info.rootDirectoryName = info.rootName+"/";
+			}else{
+				info.rootDirectoryName = parameters.rootDirectory+"/";
+			}
+			
+			return info;
 		}
 
 		var downloadDir = function(progress){
@@ -104,19 +129,8 @@ homeModule.factory('homeService', [
 			var dirPaths = [];
 			var files = [];
 			var requestedPromises = [];
-			
-			if(!downloadFileName || downloadFileName==""){
-				downloadFileName = repoInfo.rootName;
-			}
-			if(rootDirectoryName=="false"){
-				rootDirectoryName = "";
-			}else if(!rootDirectoryName || rootDirectoryName=="" || rootDirectoryName=="true"){
-				rootDirectoryName = repoInfo.rootName+"/";
-			}else{
-				rootDirectoryName = rootDirectoryName+"/";
-			}
 
-			dirPaths.push(repoInfo.directoryPath);
+			dirPaths.push(repoInfo.resPath);
 			mapFileAndDirectory(dirPaths, files, requestedPromises, progress);
 		}
 
@@ -143,13 +157,13 @@ homeModule.factory('homeService', [
 			var zip = new JSZip();
 			$q.all(requestedPromises).then(function(data) {
 				for(var i=files.length-1; i>=0; i--){
-					zip.file(rootDirectoryName+files[i].path.substring(repoInfo.directoryPath.length+1),
+					zip.file(repoInfo.rootDirectoryName+files[i].path.substring(repoInfo.resPath.length+1),
 						files[i].data);
 				}
 
 				progress.isProcessing.val=false;
 				zip.generateAsync({type:"blob"}).then(function(content) {
-					saveAs(content, downloadFileName+".zip");
+					saveAs(content, repoInfo.downloadFileName+".zip");
 				});
 			});
 		}
@@ -165,12 +179,22 @@ homeModule.factory('homeService', [
 			progress.totalFiles.val = requestedPromises.length;
 		}
 
-		var downloadFile = function (url) {
+		var downloadFile = function (progress) {
+			progress.isProcessing.val=true;
+			progress.downloadedFiles.val = 0;
+			progress.totalFiles.val = 1;
+			
+			var url = "https://raw.githubusercontent.com/"+repoInfo.author+"/"+
+					repoInfo.repository+"/"+repoInfo.branch+"/"+repoInfo.resPath;
+		
 			var zip = new JSZip();
 			$http.get(url, {responseType: "arraybuffer"}).then(function (file){
+				progress.downloadedFiles.val = 1;
 				zip.file(repoInfo.rootName, file.data);
+				
+				progress.isProcessing.val=false;
 				zip.generateAsync({type:"blob"}).then(function(content){
-					saveAs(content, repoInfo.rootName+".zip");
+					saveAs(content, repoInfo.downloadFileName+".zip");
 				});
 			}, function(error){
 				console.log(error);
@@ -178,12 +202,10 @@ homeModule.factory('homeService', [
 		}
 
 		return {
-			downloadZippedFiles: function(parameter, progress){
-				repoInfo = resolveUrl(parameter.url);
-				downloadFileName = parameter.fileName;
-				rootDirectoryName = parameter.rootDirectory;
+			downloadZippedFiles: function(parameters, progress, toastr){
+				repoInfo = parseInfo(parameters);
 
-				if(!repoInfo.directoryPath || repoInfo.directoryPath==""){
+				if(!repoInfo.resPath || repoInfo.resPath==""){
 					if(!repoInfo.branch || repoInfo.branch==""){
 						repoInfo.branch="master";
 					}
@@ -193,14 +215,15 @@ homeModule.factory('homeService', [
 					
 					window.location = downloadUrl;
 				}else{
-					$http.get(repoInfo.urlPrefix+repoInfo.directoryPath+repoInfo.urlPostfix).then(function (response){
+					$http.get(repoInfo.urlPrefix+repoInfo.resPath+repoInfo.urlPostfix).then(function (response){
 						if(response.data instanceof Array){
 							downloadDir(progress);
 						}else{
-							var downloadUrl = "https://raw.githubusercontent.com/"+repoInfo.author+"/"+
-								repoInfo.repository+"/"+repoInfo.branch+"/"+repoInfo.directoryPath;
-							downloadFile(downloadUrl);
+							downloadFile(progress);
 						}
+					}, function(error){
+						console.log(error);
+						toastr.warning("Download Error!", {iconClass: 'toast-down'});
 					});
 				}
 			},

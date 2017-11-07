@@ -4,16 +4,16 @@
 	<div class="vertical-space"></div>
 	<h1><a href="https://minhaskamal.github.io/DownGit">DownGit</a></h1>
 	<div class="center-row"></div>
-	<h4>Create GitHub Directory Download Link</h4>
+	<h4>Create GitHub Resource Download Link</h4>
 	
 	
 	<div class="vertical-space"></div>
 	<div class="col-md-6 center-row">
-		<input name="url" type="url" placeholder="GitHub Directory Link" class="form-control" ng-model="url" ></input>
+		<input name="url" type="url" placeholder="GitHub File or Directory Link" class="form-control" ng-model="url" ng-keypress="catchEnter($event)"></input>
 	</div>
 	<div class="btn-group center-row">
 		<button type="button" class="btn btn-default" ng-click="createDownLink()">Create Download Link</button>
-		<a type="button" class="btn btn-default" ng-href="#home?url={{url}}">Download</a>
+		<button type="button" class="btn btn-default" ng-click="download()">Download</button>
 	</div>
 	
 	
