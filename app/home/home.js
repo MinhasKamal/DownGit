@@ -47,8 +47,15 @@ homeModule.config([
 								totalFiles: $scope.totalFiles};
 						homeService.downloadZippedFiles(parameter, progress, toastr);
 					}else if($scope.url!=""){
+						$scope.url = "";
 						toastr.warning("Invalid URL", {iconClass: 'toast-down'});
 					}
+
+					$scope.catchEnter = function(keyEvent){
+						if(keyEvent.which == 13){
+							$scope.download();
+						}
+					};
 
 					$scope.createDownLink = function(){
 						$scope.downUrl="";
@@ -62,6 +69,10 @@ homeModule.config([
 						}else if($scope.url!=""){
 							toastr.warning("Invalid URL", {iconClass: 'toast-down'});
 						}
+					};
+
+					$scope.download = function(){
+						window.location = "#home?url="+$scope.url;
 					};
 
 				}],
@@ -90,7 +101,7 @@ homeModule.factory('homeService', [
 				info.resPath = repoPath.substring(
 					repoPath.indexOf(splitPath[4])+splitPath[4].length+1);
 			}
-            info.urlPrefix = "https://api.github.com/repos/"+info.author+
+			info.urlPrefix = "https://api.github.com/repos/"+info.author+
 					"/"+info.repository+"/contents/";
 			info.urlPostfix = "?ref="+info.branch;
 			
