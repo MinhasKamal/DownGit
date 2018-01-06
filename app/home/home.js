@@ -7,226 +7,244 @@
 'use strict';
 
 var homeModule = angular.module('homeModule', [
-	'ngRoute',
+    'ngRoute',
 ]);
 
 homeModule.config([
-	'$routeProvider',
+    '$routeProvider',
 
-	function ($routeProvider) {
-		$routeProvider
-			.when('/home', {
-				templateUrl: 'app/home/home.html',
-				controller: [
-				'$scope',
-				'$routeParams',
-				'$location',
-				'toastr',
-				'homeService',
+    function ($routeProvider) {
+        $routeProvider
+            .when('/home', {
+                templateUrl: 'app/home/home.html',
+                controller: [
+                '$scope',
+                '$routeParams',
+                '$location',
+                'toastr',
+                'homeService',
 
-				function($scope, $routeParams, $location, toastr, homeService){
-					$scope.downUrl="";
-					$scope.url="";
-					$scope.isProcessing={val: false};
-					$scope.downloadedFiles={val: 0};
-					$scope.totalFiles={val: 0};
+                function($scope, $routeParams, $location, toastr, homeService) {
+                    $scope.downUrl = "";
+                    $scope.url = "";
+                    $scope.isProcessing = {val: false};
+                    $scope.downloadedFiles = {val: 0};
+                    $scope.totalFiles = {val: 0};
 
-					var templateUrl = "github.com";
-					var downloadUrlPrefix = "https://minhaskamal.github.io/DownGit/#/home?url=";
+                    var templateUrl = "github.com";
+                    var downloadUrlPrefix = "https://minhaskamal.github.io/DownGit/#/home?url=";
 
-					if($routeParams.url){
-						$scope.url=$routeParams.url;
-					}
+                    if($routeParams.url){
+                        $scope.url=$routeParams.url;
+                    }
 
-					if($scope.url.match(templateUrl)){
-						var parameter = {url: $routeParams.url,
-								fileName: $routeParams.fileName,
-								rootDirectory: $routeParams.rootDirectory};
-						var progress = {isProcessing: $scope.isProcessing,
-								downloadedFiles: $scope.downloadedFiles,
-								totalFiles: $scope.totalFiles};
-						homeService.downloadZippedFiles(parameter, progress, toastr);
-					}else if($scope.url!=""){
-						$scope.url = "";
-						toastr.warning("Invalid URL", {iconClass: 'toast-down'});
-					}
+                    if($scope.url.match(templateUrl)){
+                        var parameter = {
+                            url: $routeParams.url,
+                            fileName: $routeParams.fileName,
+                            rootDirectory: $routeParams.rootDirectory
+                        };
+                        var progress = {
+                            isProcessing: $scope.isProcessing,
+                            downloadedFiles: $scope.downloadedFiles,
+                            totalFiles: $scope.totalFiles
+                        };
+                        homeService.downloadZippedFiles(parameter, progress, toastr);
 
-					$scope.catchEnter = function(keyEvent){
-						if(keyEvent.which == 13){
-							$scope.download();
-						}
-					};
+                    } else if($scope.url!=""){
+                        $scope.url = "";
+                        toastr.warning("Invalid URL!", {iconClass: 'toast-down'});
+                    }
 
-					$scope.createDownLink = function(){
-						$scope.downUrl="";
+                    $scope.catchEnter = function(keyEvent){
+                        if(keyEvent.which == 13){
+                            $scope.download();
+                        }
+                    };
 
-						if(!$scope.url){
-							return;
-						}
+                    $scope.createDownLink = function() {
+                        $scope.downUrl="";
 
-						if($scope.url.match(templateUrl)){
-							$scope.downUrl = downloadUrlPrefix + $scope.url;
-						}else if($scope.url!=""){
-							toastr.warning("Invalid URL", {iconClass: 'toast-down'});
-						}
-					};
+                        if(!$scope.url){
+                            return;
+                        }
 
-					$scope.download = function(){
-						window.location = "#home?url="+$scope.url;
-					};
+                        if($scope.url.match(templateUrl)){
+                            $scope.downUrl = downloadUrlPrefix + $scope.url;
+                        } else{
+                            toastr.warning("Invalid URL!", {iconClass: 'toast-down'});
+                        }
+                    };
 
-				}],
-			});
-	}
+                    $scope.download = function() {
+                        window.location = "#home?url="+$scope.url;
+                    };
+
+                }],
+            });
+    }
 ]);
 
 homeModule.factory('homeService', [
-	'$http',
-	'$q',
-	
-	function ($http, $q) {
-		var repoInfo = {};
+    '$http',
+    '$q',
 
-		var parseInfo = function(parameters){
-			var repoPath = new URL(parameters.url).pathname;
-			var splitPath = repoPath.split("/");
-			var info = {};
-			
-			info.author = splitPath[1];
-			info.repository = splitPath[2];
-			info.branch = splitPath[4];
-			
-			info.rootName = splitPath[splitPath.length-1];
-			if(!!splitPath[4]){
-				info.resPath = repoPath.substring(
-					repoPath.indexOf(splitPath[4])+splitPath[4].length+1);
-			}
-			info.urlPrefix = "https://api.github.com/repos/"+info.author+
-					"/"+info.repository+"/contents/";
-			info.urlPostfix = "?ref="+info.branch;
-			
-			if(!parameters.fileName || parameters.fileName==""){
-				info.downloadFileName = info.rootName;
-			}else{
-				info.downloadFileName = parameters.fileName;
-			}
-			
-			if(parameters.rootDirectory=="false"){
-				info.rootDirectoryName = "";
-			}else if(!parameters.rootDirectory || parameters.rootDirectory=="" ||
-					parameters.rootDirectory=="true"){
-				info.rootDirectoryName = info.rootName+"/";
-			}else{
-				info.rootDirectoryName = parameters.rootDirectory+"/";
-			}
-			
-			return info;
-		}
+    function ($http, $q) {
+        var repoInfo = {};
 
-		var downloadDir = function(progress){
-			progress.isProcessing.val=true;
+        var parseInfo = function(parameters) {
+            var repoPath = new URL(parameters.url).pathname;
+            var splitPath = repoPath.split("/");
+            var info = {};
 
-			var dirPaths = [];
-			var files = [];
-			var requestedPromises = [];
+            info.author = splitPath[1];
+            info.repository = splitPath[2];
+            info.branch = splitPath[4];
 
-			dirPaths.push(repoInfo.resPath);
-			mapFileAndDirectory(dirPaths, files, requestedPromises, progress);
-		}
+            info.rootName = splitPath[splitPath.length-1];
+            if(!!splitPath[4]){
+                info.resPath = repoPath.substring(
+                    repoPath.indexOf(splitPath[4])+splitPath[4].length+1
+                );
+            }
+            info.urlPrefix = "https://api.github.com/repos/"+
+                info.author+"/"+info.repository+"/contents/";
+            info.urlPostfix = "?ref="+info.branch;
 
-		var mapFileAndDirectory = function(dirPaths, files, requestedPromises, progress){
-			$http.get(repoInfo.urlPrefix+dirPaths.pop()+repoInfo.urlPostfix).then(function (response){
-				for (var i=response.data.length-1; i>=0; i--){
-					if(response.data[i].type=="dir"){
-						dirPaths.push(response.data[i].path);
-					}else{
-						getFile(response.data[i].path, response.data[i].download_url,
-							files, requestedPromises, progress);
-					}
-				}
+            if(!parameters.fileName || parameters.fileName==""){
+                info.downloadFileName = info.rootName;
+            } else{
+                info.downloadFileName = parameters.fileName;
+            }
 
-				if(dirPaths.length<=0){
-					downloadFiles(files, requestedPromises, progress);
-				}else{
-					mapFileAndDirectory(dirPaths, files, requestedPromises, progress);
-				}
-			});
-		}
+            if(parameters.rootDirectory=="false"){
+                info.rootDirectoryName = "";
 
-		var downloadFiles = function(files, requestedPromises, progress){
-			var zip = new JSZip();
-			$q.all(requestedPromises).then(function(data) {
-				for(var i=files.length-1; i>=0; i--){
-					zip.file(repoInfo.rootDirectoryName+files[i].path.substring(repoInfo.resPath.length+1),
-						files[i].data);
-				}
+            } else if(!parameters.rootDirectory || parameters.rootDirectory=="" ||
+                parameters.rootDirectory=="true"){
+                info.rootDirectoryName = info.rootName+"/";
 
-				progress.isProcessing.val=false;
-				zip.generateAsync({type:"blob"}).then(function(content) {
-					saveAs(content, repoInfo.downloadFileName+".zip");
-				});
-			});
-		}
+            } else{
+                info.rootDirectoryName = parameters.rootDirectory+"/";
+            }
 
-		var getFile = function (path, url, files, requestedPromises, progress) {
-			var promise = $http.get(url, {responseType: "arraybuffer"}).then(function (file){
-				files.push({path:path, data:file.data});
-				progress.downloadedFiles.val = files.length;
-			}, function(error){
-				console.log(error);
-			});
-			requestedPromises.push(promise);
-			progress.totalFiles.val = requestedPromises.length;
-		}
+            return info;
+        }
 
-		var downloadFile = function (progress) {
-			progress.isProcessing.val=true;
-			progress.downloadedFiles.val = 0;
-			progress.totalFiles.val = 1;
-			
-			var url = "https://raw.githubusercontent.com/"+repoInfo.author+"/"+
-					repoInfo.repository+"/"+repoInfo.branch+"/"+repoInfo.resPath;
-		
-			var zip = new JSZip();
-			$http.get(url, {responseType: "arraybuffer"}).then(function (file){
-				progress.downloadedFiles.val = 1;
-				zip.file(repoInfo.rootName, file.data);
-				
-				progress.isProcessing.val=false;
-				zip.generateAsync({type:"blob"}).then(function(content){
-					saveAs(content, repoInfo.downloadFileName+".zip");
-				});
-			}, function(error){
-				console.log(error);
-			});
-		}
+        var downloadDir = function(progress){
+            progress.isProcessing.val = true;
 
-		return {
-			downloadZippedFiles: function(parameters, progress, toastr){
-				repoInfo = parseInfo(parameters);
+            var dirPaths = [];
+            var files = [];
+            var requestedPromises = [];
 
-				if(!repoInfo.resPath || repoInfo.resPath==""){
-					if(!repoInfo.branch || repoInfo.branch==""){
-						repoInfo.branch="master";
-					}
+            dirPaths.push(repoInfo.resPath);
+            mapFileAndDirectory(dirPaths, files, requestedPromises, progress);
+        }
 
-					var downloadUrl = "https://github.com/"+repoInfo.author+"/"+
-						repoInfo.repository+"/archive/"+repoInfo.branch+".zip";
-					
-					window.location = downloadUrl;
-				}else{
-					$http.get(repoInfo.urlPrefix+repoInfo.resPath+repoInfo.urlPostfix).then(function (response){
-						if(response.data instanceof Array){
-							downloadDir(progress);
-						}else{
-							downloadFile(progress);
-						}
-					}, function(error){
-						console.log(error);
-						toastr.warning("Download Error!", {iconClass: 'toast-down'});
-					});
-				}
-			},
-		};
-	}
+        var mapFileAndDirectory = function(dirPaths, files, requestedPromises, progress){
+            $http.get(repoInfo.urlPrefix+dirPaths.pop()+repoInfo.urlPostfix).then(function(response) {
+                for(var i=response.data.length-1; i>=0; i--){
+                    if(response.data[i].type=="dir"){
+                        dirPaths.push(response.data[i].path);
+
+                    } else{
+                        getFile(response.data[i].path,
+                            response.data[i].download_url,
+                            files, requestedPromises, progress
+                        );
+                    }
+                }
+
+                if(dirPaths.length<=0){
+                    downloadFiles(files, requestedPromises, progress);
+                } else{
+                    mapFileAndDirectory(dirPaths, files, requestedPromises, progress);
+                }
+            });
+        }
+
+        var downloadFiles = function(files, requestedPromises, progress){
+            var zip = new JSZip();
+            $q.all(requestedPromises).then(function(data) {
+                for(var i=files.length-1; i>=0; i--){
+                    zip.file(
+                        repoInfo.rootDirectoryName+files[i].path.substring(repoInfo.resPath.length+1),
+                        files[i].data
+                    );
+                }
+
+                progress.isProcessing.val=false;
+                zip.generateAsync({type:"blob"}).then(function(content) {
+                    saveAs(content, repoInfo.downloadFileName+".zip");
+                });
+            });
+        }
+
+        var getFile = function (path, url, files, requestedPromises, progress) {
+            var promise = $http.get(url, {responseType: "arraybuffer"}).then(function (file) {
+                files.push({path:path, data:file.data});
+                progress.downloadedFiles.val = files.length;
+            }, function(error) {
+                console.log(error);
+            });
+
+            requestedPromises.push(promise);
+            progress.totalFiles.val = requestedPromises.length;
+        }
+
+        var downloadFile = function (url, progress, toastr) {
+            progress.isProcessing.val=true;
+            progress.downloadedFiles.val = 0;
+            progress.totalFiles.val = 1;
+
+            var zip = new JSZip();
+            $http.get(url, {responseType: "arraybuffer"}).then(function (file) {
+                progress.downloadedFiles.val = 1;
+                zip.file(repoInfo.rootName, file.data);
+
+                progress.isProcessing.val=false;
+                zip.generateAsync({type:"blob"}).then(function(content) {
+                    saveAs(content, repoInfo.downloadFileName+".zip");
+                });
+            }, function(error) {
+                console.log(error);
+                progress.isProcessing.val=false;
+                toastr.warning("Error! Server failure or wrong URL.", {iconClass: 'toast-down'});
+            });
+        }
+
+        return {
+            downloadZippedFiles: function(parameters, progress, toastr) {
+                repoInfo = parseInfo(parameters);
+
+                if(!repoInfo.resPath || repoInfo.resPath==""){
+                    if(!repoInfo.branch || repoInfo.branch==""){
+                        repoInfo.branch="master";
+                    }
+
+                    var downloadUrl = "https://github.com/"+repoInfo.author+"/"+
+                        repoInfo.repository+"/archive/"+repoInfo.branch+".zip";
+
+                    window.location = downloadUrl;
+
+                }else{
+                    $http.get(repoInfo.urlPrefix+repoInfo.resPath+repoInfo.urlPostfix).
+                            then(function(response) {
+                        if(response.data instanceof Array){
+                            downloadDir(progress);
+                        }else{
+                            downloadFile(response.data.download_url, progress, toastr);
+                        }
+
+                    }, function(error) {
+                        console.log("probable big file.");
+                        downloadFile("https://raw.githubusercontent.com/"+repoInfo.author+"/"+
+                                repoInfo.repository+"/"+repoInfo.branch+"/"+repoInfo.resPath,
+                                progress, toastr);
+                    });
+                }
+            },
+        };
+    }
 ]);
