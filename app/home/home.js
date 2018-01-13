@@ -229,8 +229,7 @@ homeModule.factory('homeService', [
                     window.location = downloadUrl;
 
                 }else{
-                    $http.get(repoInfo.urlPrefix+repoInfo.resPath+repoInfo.urlPostfix).
-                            then(function(response) {
+                    $http.get(repoInfo.urlPrefix+repoInfo.resPath+repoInfo.urlPostfix).then(function(response) {
                         if(response.data instanceof Array){
                             downloadDir(progress);
                         }else{
