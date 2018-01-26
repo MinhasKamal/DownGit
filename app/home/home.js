@@ -169,7 +169,7 @@ homeModule.factory('homeService', [
             $q.all(requestedPromises).then(function(data) {
                 for(var i=files.length-1; i>=0; i--){
                     zip.file(
-                        repoInfo.rootDirectoryName+files[i].path.substring(repoInfo.resPath.length+1),
+                        repoInfo.rootDirectoryName+files[i].path.substring(decodeURI(repoInfo.resPath).length+1),
                         files[i].data
                     );
                 }
