@@ -4,8 +4,6 @@
 * License: MIT License                                     *
 ***********************************************************/
 
-'use strict';
-
 var homeModule = angular.module('homeModule', [
     'ngRoute',
 ]);
@@ -149,10 +147,14 @@ homeModule.factory('homeService', [
                         dirPaths.push(response.data[i].path);
 
                     } else{
-                        getFile(response.data[i].path,
-                            response.data[i].download_url,
-                            files, requestedPromises, progress
-                        );
+                        if(response.data[i].download_url){
+							getFile(response.data[i].path,
+								response.data[i].download_url,
+								files, requestedPromises, progress
+							);
+						} else {
+							console.log(response.data[i]);
+						}
                     }
                 }
 
