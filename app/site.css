@@ -1,50 +1,50 @@
 body{
-	font-family: sans-serif, arial;
+    font-family: sans-serif, arial;
     color: #4A4F64;
 }
 
 h1, h2, h3, h4, h5, h6, p{
-	margin: 0;
+    margin: 0;
 }
 
 a{
-	color: #004d99;
+    color: #004d99;
 }a:hover{
-	text-decoration: none;
-	color: #004d99;
+    text-decoration: none;
+    color: #004d99;
 }
 
 /**********************************/
 
 .home .center-row{
-	float: none;
-	margin: auto;
-	padding-bottom: 1em;
+    float: none;
+    margin: auto;
+    padding-bottom: 1em;
 }
 
 .home .vertical-space{
-	float: none;
-	margin: auto;
-	padding-bottom: 3em;
+    float: none;
+    margin: auto;
+    padding-bottom: 3em;
 }
 
 .home h1 a{
-	color: #4A4F64;
+    color: #4A4F64;
 }.home h1  a:hover{
-	text-decoration: none;
+    text-decoration: none;
 }
 
 .home .processing-img{
-	width: 4em;
-	height: auto;
+    width: 4em;
+    height: auto;
 }
 
 .home .download-link-box{
-	resize: vertical;
+    resize: vertical;
 }
 
 .home .footer{
-	position: fixed;
+    position: fixed;
     bottom: 0;
     width: 100%;
 }
@@ -52,8 +52,8 @@ a{
 /**********************************/
 
 .toast-down{
-	background-image: url("../res/images/warning.png") !important;
-	background-color: #8c8c8c;
+    background-image: url("../res/images/warning.png") !important;
+    background-color: #8c8c8c;
 }
 
 
