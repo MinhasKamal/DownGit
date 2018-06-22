@@ -30,14 +30,15 @@ homeModule.config([
                     $scope.downloadedFiles = {val: 0};
                     $scope.totalFiles = {val: 0};
 
-                    var templateUrl = "github.com";
-                    var downloadUrlPrefix = "https://minhaskamal.github.io/DownGit/#/home?url=";
+                    var templateUrl = "https?://github.com/.+/.+";
+                    var downloadUrlInfix = "#/home?url=";
+                    var downloadUrlPrefix = "https://minhaskamal.github.io/DownGit/"+downloadUrlInfix;
 
-                    if($routeParams.url){
-                        $scope.url=$routeParams.url;
+                    if ($routeParams.url) {
+                        $scope.url = $routeParams.url;
                     }
 
-                    if($scope.url.match(templateUrl)){
+                    if ($scope.url.match(templateUrl)) {
                         var parameter = {
                             url: $routeParams.url,
                             fileName: $routeParams.fileName,
@@ -50,13 +51,12 @@ homeModule.config([
                         };
                         downGitService.downloadZippedFiles(parameter, progress, toastr);
 
-                    } else if($scope.url!=""){
-                        $scope.url = "";
+                    } else if ($scope.url != "") {
                         toastr.warning("Invalid URL!", {iconClass: 'toast-down'});
                     }
 
-                    $scope.catchEnter = function(keyEvent){
-                        if(keyEvent.which == 13){
+                    $scope.catchEnter = function(keyEvent) {
+                        if (keyEvent.which == 13) {
                             $scope.download();
                         }
                     };
@@ -64,19 +64,19 @@ homeModule.config([
                     $scope.createDownLink = function() {
                         $scope.downUrl="";
 
-                        if(!$scope.url){
+                        if (!$scope.url) {
                             return;
                         }
 
-                        if($scope.url.match(templateUrl)){
+                        if ($scope.url.match(templateUrl)) {
                             $scope.downUrl = downloadUrlPrefix + $scope.url;
-                        } else{
+                        } else {
                             toastr.warning("Invalid URL!", {iconClass: 'toast-down'});
                         }
                     };
 
                     $scope.download = function() {
-                        window.location = "#home?url="+$scope.url;
+                        window.location = downloadUrlInfix+$scope.url;
                     };
 
                 }],
