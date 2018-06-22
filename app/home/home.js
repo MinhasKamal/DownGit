@@ -148,13 +148,13 @@ homeModule.factory('homeService', [
 
                     } else{
                         if(response.data[i].download_url){
-							getFile(response.data[i].path,
-								response.data[i].download_url,
-								files, requestedPromises, progress
-							);
-						} else {
-							console.log(response.data[i]);
-						}
+                            getFile(response.data[i].path,
+                                response.data[i].download_url,
+                                files, requestedPromises, progress
+                            );
+                        } else {
+                            console.log(response.data[i]);
+                        }
                     }
                 }
 
