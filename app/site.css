@@ -49,6 +49,13 @@ a{
     width: 100%;
 }
 
+.donate-button{
+    color: #999999;
+}.donate-button:hover{
+    text-decoration: none;
+    color: #ff4444;
+}
+
 /**********************************/
 
 .toast-down{
