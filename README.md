@@ -12,9 +12,9 @@ With this tool you can directly download or create download link to any GitHub *
 
 ### Final Release ➦ [Release](https://github.com/chris1111/DownGit/releases/tag/V1)
 
-### How to Use? ⬇︎
+### How to use: Video ⬇︎
 
-<table><tr><td> <img src="https://github.com/chris1111/DownGit/raw/master/res/images/Readme.gif" /> </td></tr></table>
+https://github.com/chris1111/DownGit/assets/6248794/3ef8f158-93cf-4360-aede-c3222af8c6b0
 
 ##### Advanced Usage
 
