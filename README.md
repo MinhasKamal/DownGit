@@ -6,6 +6,8 @@ With this tool you can directly download or create download link to any GitHub *
 
 ### Website ➦ [DownGit](https://chris1111.github.io/DownGit/#/home)
 
+### Release ➦ [MOD_BY_CHRIS1111](https://github.com/chris1111/DownGit/releases/tag/MOD_BY_CHRIS1111)
+
 ### How to Use? ⬇︎
 
 <table><tr><td> <img src="https://github.com/chris1111/DownGit/raw/master/res/images/Readme.gif" /> </td></tr></table>
