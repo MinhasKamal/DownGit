@@ -1,6 +1,6 @@
 body{
     font-family: sans-serif, arial;
-    color: #2d313a;
+    color: #4A4F64;
     background-color: #2d313a;
 }
 
@@ -30,7 +30,7 @@ a{
 }
 
 .home h1 a{
-    color: #2d313a;
+    color: #4A4F64;
 }.home h1  a:hover{
     text-decoration: none;
 }
