@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html ng-app="downGit">
 <head>
+<br>
+<div style="display: flex; justify-content: center">
+<label class="switch">
+<input type="checkbox" onclick="changeMode()">
+<span class="slider"></span>
+</label>
+</div>
+</div>
+
     
     <!-------------------------------- META -------------------------------->
     
@@ -20,6 +29,7 @@
     <link href="lib/angular-toastr(2.0.0).min.css" rel="stylesheet"/>
     
     <link href="app/site.css" rel="stylesheet" />
+    <link href="app/Slide.css" rel="stylesheet" />
 </head>
 <body>
     
@@ -39,5 +49,6 @@
     <script src="app/app.js"></script>
     <script src="app/home/home.js"></script>
     <script src="app/home/down-git.js"></script>
+    <script src="app/home/Toggle.js"></script>
 </body>
 </html>

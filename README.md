@@ -1,4 +1,4 @@
-<h1> <img src="https://github.com/MinhasKamal/DownGit/raw/master/res/images/downgit.png" width="20" height=auto /> DownGit </h1>
+<h1> <img src="https://github.com/MinhasKamal/DownGit/raw/master/res/images/downgit.png" width="25" height=auto /> DownGit </h1>
 
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?business=5KR6BA9MYTM62&no_recurring=0&currency_code=USD)
 
@@ -6,13 +6,15 @@
 
 With this tool you can directly download or create download link to any GitHub **public directory or file**.
 
-### Website
+### Website 
 
 [DownGit ↑](https://minhaskamal.github.io/DownGit)
 
-### How to Use?
+### Final Release ➦ [Release](https://github.com/chris1111/DownGit/releases/tag/V1)
 
-<table><tr><td> <img src="https://cloud.githubusercontent.com/assets/5456665/17822364/940bded8-6678-11e6-9603-b84d75bccec1.gif" /> </td></tr></table>
+### How to use: Video ⬇︎
+
+https://github.com/chris1111/DownGit/assets/6248794/3ef8f158-93cf-4360-aede-c3222af8c6b0
 
 ##### Advanced Usage
 
@@ -25,4 +27,4 @@ In default, value of `fileName` and `rootDirectory` is set to the name of the do
 If you want to download file- **`https://github.com/MinhasKamal/DownGit/blob/master/res/images/downgit.png`** with name- **`DownGitIcon.zip`**, then the link will be- https://minhaskamal.github.io/DownGit/#/home?url=https://github.com/MinhasKamal/DownGit/blob/master/res/images/downgit.png&fileName=DownGitIcon
 
 ### License
-<a rel="license" href="https://opensource.org/licenses/MIT"><img alt="MIT License" src="https://cloud.githubusercontent.com/assets/5456665/18950087/fbe0681a-865f-11e6-9552-e59d038d5913.png" width="60em" height=auto/></a><br/><a href="https://github.com/MinhasKamal/DownGit">DownGit</a> is licensed under <a rel="license" href="https://opensource.org/licenses/MIT">MIT License</a>.
+<a rel="license" href="https://opensource.org/licenses/MIT"><img alt="MIT License" src="https://cloud.githubusercontent.com/assets/5456665/18950087/fbe0681a-865f-11e6-9552-e59d038d5913.png" width="60em" height=auto/></a><br/><a href="https://github.com/MinhasKamal/DownGit">DownGit</a> is licensed under <a rel="license" href="https://opensource.org/licenses/MIT">MIT License</a>. [Images MIT License](https://github.com/MinhasKamal/DownGit/raw/master/res/images/LICENSE)

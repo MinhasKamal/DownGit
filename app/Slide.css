@@ -1,0 +1,77 @@
+/* Toggle Dark Light by chris1111 */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: "Open Sans", sans-serif;
+	background: #2d313a;
+	transition: .6s;
+}
+
+#container {
+	position: sticky;
+	cursor: pointer;
+	top: 0;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.switch {
+	position: relative;
+	display: inline-block;
+	width: 70px;
+	height: 38px;
+	border-radius: 50px;
+	box-shadow: 0px 0px 4px 4px rgb(0, 0, 0);
+}
+
+.switch input {
+	display: none;
+}
+
+.slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: linear-gradient(180deg, #777, #3a3a3a);
+	border-radius: 34px;
+	transition: 0.3s;
+}
+
+.slider:before {
+	content: url("../res/images/moon.circle.png");
+	position: absolute;
+	height: 30px;
+	width: 30px;
+	left: 5px;
+	bottom: 4px;
+	border-radius: 50%;
+	box-shadow: 0px 0px 3px 3px rgba(0, 0, 0, 0.5);
+	transition: 0.3s;
+}
+
+input:checked+.slider {
+	background: #D3D3D3;
+}
+
+input:checked+.slider:before {
+	transform: translateX(30px);
+	content: url("../res/images/sun.circle.png");
+}
+
+.dark-mode {
+	background: #DBDFE2;
+}
+
+/* toggle */
+
+.dark-mode {
+	background-color: #DBDFE2;
+	color: #2d313a;
+}          
+              
