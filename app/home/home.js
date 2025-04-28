@@ -37,12 +37,13 @@ homeModule.config([
                     if ($routeParams.url) {
                         $scope.url = $routeParams.url;
                     }
-
+                    
                     if ($scope.url.match(templateUrl)) {
                         var parameter = {
                             url: $routeParams.url,
                             fileName: $routeParams.fileName,
-                            rootDirectory: $routeParams.rootDirectory
+                            rootDirectory: $routeParams.rootDirectory,
+                            directFile: $routeParams.directFile,
                         };
                         var progress = {
                             isProcessing: $scope.isProcessing,
