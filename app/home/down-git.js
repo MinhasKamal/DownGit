@@ -119,20 +119,24 @@ downGitModule.factory('downGitService', [
             progress.totalFiles.val = requestedPromises.length;
         }
 
-        var downloadFile = function (url, progress, toastr) {
+        var downloadFile = function (url, progress, toastr, directFile) {
             progress.isProcessing.val=true;
             progress.downloadedFiles.val = 0;
             progress.totalFiles.val = 1;
 
-            var zip = new JSZip();
+            var zip = !directFile? new JSZip() : null;
             $http.get(url, {responseType: "arraybuffer"}).then(function (file) {
                 progress.downloadedFiles.val = 1;
-                zip.file(repoInfo.rootName, file.data);
-
-                progress.isProcessing.val=false;
-                zip.generateAsync({type:"blob"}).then(function(content) {
-                    saveAs(content, repoInfo.downloadFileName+".zip");
-                });
+                if (directFile) {
+                    progress.isProcessing.val=false;
+                    saveAs(new Blob([file.data]), repoInfo.downloadFileName);
+                } else {
+                    zip.file(repoInfo.rootName, file.data);
+                    progress.isProcessing.val=false;
+                    zip.generateAsync({type:"blob"}).then(function(content) {
+                        saveAs(content, repoInfo.downloadFileName+".zip");
+                    });
+                }
             }, function(error) {
                 console.log(error);
                 progress.isProcessing.val=false;
@@ -159,7 +163,7 @@ downGitModule.factory('downGitService', [
                         if(response.data instanceof Array){
                             downloadDir(progress);
                         }else{
-                            downloadFile(response.data.download_url, progress, toastr);
+                            downloadFile(response.data.download_url, progress, toastr, parameters.directFile);
                         }
 
                     }, function(error) {
